@@ -15,7 +15,9 @@ public class EducationPlan {
     public Knowledge apply(Student student, LocalDate currentDate) {
         while (currentDate.isBefore(expirationDate) || currentDate.equals(expirationDate)) {
             for (Activity activity : activities) {
-                activity.teach(student);
+                if (activity.getTimeFrame().checkForThisDay(currentDate)) {
+                    activity.teach(student);
+                }
             }
             currentDate = currentDate.plusDays(1);
         }

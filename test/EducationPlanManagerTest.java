@@ -22,7 +22,7 @@ class EducationPlanManagerTest {
 
         student = new Student(1, new Knowledge(0, 0));
         activities = new ArrayList<>();
-        activities.add(new SelfEducationStrategy());
+        activities.add(new SelfEducationStrategy(new EveryDayTimeStrategy()));
         plan = new EducationPlan(activities, currentDate);
     }
 
@@ -43,9 +43,9 @@ class EducationPlanManagerTest {
 
     @Test
     void applyPlan__manyActivities__oneDay() {
-        activities.add(new InternshipStrategy());
-        activities.add(new UniversityStrategy());
-        activities.add(new MeetUpStrategy());
+        activities.add(new InternshipStrategy(new EveryDayTimeStrategy()));
+        activities.add(new UniversityStrategy(new EveryDayTimeStrategy()));
+        activities.add(new MeetUpStrategy(new EveryDayTimeStrategy()));
         plan = new EducationPlan(activities, currentDate);
 
         Knowledge result = plan.apply(student, currentDate);
@@ -54,14 +54,24 @@ class EducationPlanManagerTest {
     }
 
     @Test
-    void applyPlan__manyActivities__threeDays() {
-        activities.add(new InternshipStrategy());
-        activities.add(new UniversityStrategy());
-        activities.add(new MeetUpStrategy());
+    void applyPlan__threeDays() {
+        activities.add(new InternshipStrategy(new EveryDayTimeStrategy()));
+        activities.add(new UniversityStrategy(new EveryDayTimeStrategy()));
+        activities.add(new MeetUpStrategy(new EveryDayTimeStrategy()));
         plan = new EducationPlan(activities, currentDate.plusDays(2));
 
         Knowledge result = plan.apply(student, currentDate);
         assertThat(result.getPractical(), is(19.5));
         assertThat(result.getTheoretical(), is(19.5));
+    }
+
+    @Test
+    void applyPlan__checkingForTimeFrames() {
+        activities.add(new MeetUpStrategy(new OneDayTimeStrategy(currentDate.plusDays(1))));
+        plan = new EducationPlan(activities, currentDate.plusDays(2));
+
+        Knowledge result = plan.apply(student, currentDate);
+        assertThat(result.getPractical(), is(5.0));
+        assertThat(result.getTheoretical(), is(5.0));
     }
 }
