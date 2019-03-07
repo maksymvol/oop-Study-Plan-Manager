@@ -33,10 +33,10 @@ public class EducationPlan {
                         isFitInDay = true;
                     }
                 }
-                //System.out.println(dayInsensitivity + " " + activity.getClass() + "  " + isInThisDay + " " + isFitInDay);
+                System.out.println(dayInsensitivity + " " + activity.getClass() + "  " + isInThisDay + " " + isFitInDay);
             }
+            System.out.println("=========" + currentDate + "=========");
             currentDate = currentDate.plusDays(1);
-            //System.out.println("=========newDay=========");
         }
         return student.getKnowledge();
     }

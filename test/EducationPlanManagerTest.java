@@ -22,6 +22,7 @@ class EducationPlanManagerTest {
         currentDate = LocalDate.of(2019, 3, 5);
 
         student = new Student(1, new Knowledge(0, 0));
+        student.setHavingLaptop(true);
         activities = new ArrayList<>();
         activities.add(new SelfEducationStrategy(new EveryDayTimeStrategy()));
         plan = new EducationPlan(activities, currentDate);
@@ -159,5 +160,29 @@ class EducationPlanManagerTest {
         Knowledge result = plan.apply(student, currentDate);
         assertThat(result.getPractical(), is(1.0));
         assertThat(result.getTheoretical(), is(1.0));
+    }
+    @Test
+    void planBuilder__timeStrategyTypes__oneDayPerMonth() {
+        plan = new PlanBuilder()
+                .setLimit(currentDate, 35)
+                .setDate(currentDate)
+                .university(TimeStrategyType.ONE_DAY_PER_MONTH)
+                .meetUp(currentDate.plusDays(1))
+                .build();
+        Knowledge result = plan.apply(student, currentDate);
+        assertThat(result.getPractical(), is(5.0));
+        assertThat(result.getTheoretical(), is(5.0));
+    }
+
+    @Test
+    void activities__meetUp__StudentWithoutLaptop() {
+        student.setHavingLaptop(false);
+        plan = new PlanBuilder()
+                .setLimit(currentDate, 1)
+                .meetUp(currentDate)
+                .build();
+        Knowledge result = plan.apply(student, currentDate);
+        assertThat(result.getPractical(), is(0.0));
+        assertThat(result.getTheoretical(), is(2.0));
     }
 }

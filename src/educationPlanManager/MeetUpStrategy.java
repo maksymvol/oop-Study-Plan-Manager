@@ -13,6 +13,9 @@ public class MeetUpStrategy extends Activity {
 
     @Override
     public void teach(Student student) {
-        student.addKnowledge(2, 2);
+        if (student.hasLaptop())
+            student.addKnowledge(2, 2);
+        else
+            student.addKnowledge(0, 2);
     }
 }

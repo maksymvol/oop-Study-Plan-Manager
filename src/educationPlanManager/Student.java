@@ -5,6 +5,8 @@ public class Student {
     private double learningCoefficient;
     private Knowledge knowledge;
 
+    private boolean hasLaptop;
+
     public Student(double learningCoefficient, Knowledge knowledge) {
         this.learningCoefficient = learningCoefficient;
         this.knowledge = knowledge;
@@ -17,5 +19,13 @@ public class Student {
 
     Knowledge getKnowledge() {
         return knowledge;
+    }
+
+    public void setHavingLaptop(boolean havingLaptop) {
+        hasLaptop = havingLaptop;
+    }
+
+    public boolean hasLaptop() {
+        return hasLaptop;
     }
 }

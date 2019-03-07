@@ -36,11 +36,16 @@ public class PlanBuilder {
         return this;
     }
 
+    public PlanBuilder setLimitInYears(LocalDate startDate, int years) {
+        this.expirationDate = startDate.plusYears(years - 1);
+        return this;
+    }
+
     private TimeFrame getTimeFrameByType(TimeStrategyType type) {
         switch (type) {
             case EVERY_DAY: return new EveryDayTimeStrategy();
             case ONE_DAY_MEETUP: return new OneDayTimeStrategy(date);
-            case ONE_DAY_PER_MONTH: return new OneDayTimeStrategy(date);
+            case ONE_DAY_PER_MONTH: return new OneDayPerMonthTimeStrategy(date);
             case WORKS_DAY: return new WorkingDaysTimeStrategy();
             case TIME_INTERVAL: return new IntervalTimeStrategy(startDate, endDate);
             case YEARS_INTERVAL: return new IntervalTimeStrategy(startDate, endDate);
@@ -59,7 +64,7 @@ public class PlanBuilder {
     }
 
     public PlanBuilder meetUp(LocalDate date) {
-        activities.add(new MeetUpStrategy(new OneDayTimeStrategy(date)));
+        activities.add(new MeetUpStrategy(new OneDayPerMonthTimeStrategy(date)));
         return this;
     }
 
