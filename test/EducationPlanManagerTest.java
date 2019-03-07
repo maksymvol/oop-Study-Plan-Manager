@@ -2,8 +2,10 @@ import educationPlanManager.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -161,6 +163,7 @@ class EducationPlanManagerTest {
         assertThat(result.getPractical(), is(1.0));
         assertThat(result.getTheoretical(), is(1.0));
     }
+
     @Test
     void planBuilder__timeStrategyTypes__oneDayPerMonth() {
         plan = new PlanBuilder()
@@ -184,5 +187,36 @@ class EducationPlanManagerTest {
         Knowledge result = plan.apply(student, currentDate);
         assertThat(result.getPractical(), is(0.0));
         assertThat(result.getTheoretical(), is(2.0));
+    }
+
+    @Test
+    void planBuilder__completelyPlans() {
+        System.out.println("=======Pacifist plan=======");
+        Knowledge result = new PlanBuilder()
+                .setLimitInYears(currentDate, 5)
+                .pacifistPlan()
+                .apply(student, currentDate);
+        System.out.println("Practical points:" + result.getPractical() + "\nTheoretical points: " + result.getTheoretical());
+
+        System.out.println("\n====Self education plan====");
+        result = new PlanBuilder()
+                .setLimitInYears(currentDate, 5)
+                .selfEducationPlan()
+                .apply(student, currentDate);
+        System.out.println("Practical points:" + result.getPractical() + "\nTheoretical points: " + result.getTheoretical());
+
+        System.out.println("\n==Teach me completely plan==");
+        result = new PlanBuilder()
+                .setLimitInYears(currentDate, 5)
+                .teachMeCompletelyPlan()
+                .apply(student, currentDate);
+        System.out.println("Practical points:" + result.getPractical() + "\nTheoretical points: " + result.getTheoretical());
+
+        System.out.println("\n==Responsible Student plan==");
+        result = new PlanBuilder()
+                .setLimitInYears(currentDate, 5)
+                .responsibleStudentPlan()
+                .apply(student, currentDate);
+        System.out.println("Practical points:" + result.getPractical() + "\nTheoretical points: " + result.getTheoretical());
     }
 }

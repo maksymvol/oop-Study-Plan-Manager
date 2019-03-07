@@ -26,6 +26,32 @@ public class PlanBuilder {
         return new EducationPlan(activities, expirationDate);
     }
 
+    public EducationPlan pacifistPlan() {
+        activities.add(new UniversityStrategy(new WorkingDaysTimeStrategy()));
+        return new EducationPlan(activities, expirationDate);
+    }
+
+    public EducationPlan selfEducationPlan() {
+        activities.add(new InternshipStrategy(new WorkingDaysTimeStrategy()));
+        activities.add(new MeetUpStrategy(new OneDayPerMonthTimeStrategy(expirationDate.minusDays(1))));
+        activities.add(new SelfEducationStrategy(new EveryDayTimeStrategy()));
+        return new EducationPlan(activities, expirationDate);
+    }
+
+    public EducationPlan teachMeCompletelyPlan() {
+        activities.add(new UniversityStrategy(new WorkingDaysTimeStrategy()));
+        activities.add(new MeetUpStrategy(new OneDayPerMonthTimeStrategy(expirationDate.minusDays(1))));
+        return new EducationPlan(activities, expirationDate);
+    }
+
+    public EducationPlan responsibleStudentPlan() {
+        activities.add(new UniversityStrategy(new WorkingDaysTimeStrategy()));
+        activities.add(new MeetUpStrategy(new OneDayPerMonthTimeStrategy(expirationDate.minusDays(1))));
+        activities.add(new SelfEducationStrategy(new EveryDayTimeStrategy()));
+        activities.add(new InternshipStrategy(new IntervalTimeStrategy(expirationDate.minusYears(1), expirationDate)));
+        return new EducationPlan(activities, expirationDate);
+    }
+
     public PlanBuilder selfEducation(TimeStrategyType type) {
         activities.add(new SelfEducationStrategy(getTimeFrameByType(type)));
         return this;
@@ -37,7 +63,7 @@ public class PlanBuilder {
     }
 
     public PlanBuilder setLimitInYears(LocalDate startDate, int years) {
-        this.expirationDate = startDate.plusYears(years - 1);
+        this.expirationDate = startDate.plusYears(years);
         return this;
     }
 
