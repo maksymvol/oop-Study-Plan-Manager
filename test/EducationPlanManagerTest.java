@@ -126,6 +126,7 @@ class EducationPlanManagerTest {
     void planBuilder__activityPriorities() {
         plan = new PlanBuilder()
                 .setLimit(currentDate, 7)
+                .setTimeInterval(currentDate, currentDate.plusDays(6))
                 .internship()
                 .selfEducation(TimeStrategyType.EVERY_DAY)
                 .meetUp(currentDate.plusDays(1))
@@ -134,5 +135,29 @@ class EducationPlanManagerTest {
         Knowledge result = plan.apply(student, currentDate);
         assertThat(result.getPractical(), is(24.0));
         assertThat(result.getTheoretical(), is(24.0));
+    }
+
+    @Test
+    void planBuilder__timeStrategyTypes__timeInterval() {
+        plan = new PlanBuilder()
+                .setLimit(currentDate, 7)
+                .setTimeInterval(currentDate, currentDate.plusDays(4))
+                .selfEducation(TimeStrategyType.TIME_INTERVAL)
+                .build();
+        Knowledge result = plan.apply(student, currentDate);
+        assertThat(result.getPractical(), is(5.0));
+        assertThat(result.getTheoretical(), is(5.0));
+    }
+
+    @Test
+    void planBuilder__timeStrategyTypes__oneDayMeetUp() {
+        plan = new PlanBuilder()
+                .setLimit(currentDate, 7)
+                .setDate(currentDate)
+                .selfEducation(TimeStrategyType.ONE_DAY_MEETUP)
+                .build();
+        Knowledge result = plan.apply(student, currentDate);
+        assertThat(result.getPractical(), is(1.0));
+        assertThat(result.getTheoretical(), is(1.0));
     }
 }
