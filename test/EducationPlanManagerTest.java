@@ -66,9 +66,32 @@ class EducationPlanManagerTest {
     }
 
     @Test
-    void applyPlan__checkingForTimeFrames() {
+    void TimeFrames__oneDayTimeStrategy() {
+        activities = new ArrayList<>();
         activities.add(new MeetUpStrategy(new OneDayTimeStrategy(currentDate.plusDays(1))));
-        plan = new EducationPlan(activities, currentDate.plusDays(2));
+        plan = new EducationPlan(activities, currentDate.plusDays(6));
+
+        Knowledge result = plan.apply(student, currentDate);
+        assertThat(result.getPractical(), is(2.0));
+        assertThat(result.getTheoretical(), is(2.0));
+    }
+
+    @Test
+    void TimeFrames__workingDaysTimeStrategy() {
+        activities = new ArrayList<>();
+        activities.add(new UniversityStrategy(new WorkingDaysTimeStrategy()));
+        plan = new EducationPlan(activities, currentDate.plusDays(6));
+
+        Knowledge result = plan.apply(student, currentDate);
+        assertThat(result.getPractical(), is(2.5));
+        assertThat(result.getTheoretical(), is(2.5));
+    }
+
+    @Test
+    void TimeFrames__IntervalTimeStrategy() {
+        activities = new ArrayList<>();
+        activities.add(new SelfEducationStrategy(new IntervalTimeStrategy(currentDate, currentDate.plusDays(4))));
+        plan = new EducationPlan(activities, currentDate.plusDays(7));
 
         Knowledge result = plan.apply(student, currentDate);
         assertThat(result.getPractical(), is(5.0));
