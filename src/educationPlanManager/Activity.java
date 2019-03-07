@@ -1,18 +1,20 @@
 package educationPlanManager;
 
+import java.util.ArrayList;
+
 public class Activity{
 
-    private TimeFrame timeFrame;
+    private ArrayList<TimeFrame> timeFrames;
 
-    Activity(TimeFrame timeFrame) {
-        this.timeFrame = timeFrame;
+    Activity(ArrayList<TimeFrame> timeFrames) {
+        this.timeFrames = timeFrames;
     }
 
     public void teach(Student student) {
 
     }
 
-    public TimeFrame getTimeFrame() {
-        return timeFrame;
+    public ArrayList<TimeFrame> getTimeFrames() {
+        return timeFrames;
     }
 }

@@ -1,8 +1,10 @@
 package educationPlanManager;
 
+import java.util.ArrayList;
+
 public class InternshipStrategy extends Activity {
-    public InternshipStrategy(TimeFrame timeFrame) {
-        super(timeFrame);
+    public InternshipStrategy(ArrayList<TimeFrame> timeFrames) {
+        super(timeFrames);
     }
 
     @Override

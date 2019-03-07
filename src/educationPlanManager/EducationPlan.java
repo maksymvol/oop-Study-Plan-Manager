@@ -14,8 +14,17 @@ public class EducationPlan {
 
     public Knowledge apply(Student student, LocalDate currentDate) {
         while (currentDate.isBefore(expirationDate) || currentDate.equals(expirationDate)) {
+            boolean isInThisDay;
             for (Activity activity : activities) {
-                if (activity.getTimeFrame().checkForThisDay(currentDate)) {
+                isInThisDay = true;
+
+                for (TimeFrame frame : activity.getTimeFrames()) {
+                    if (!frame.checkForThisDay(currentDate)) {
+                        isInThisDay = false;
+                    }
+                }
+
+                if (isInThisDay) {
                     activity.teach(student);
                 }
             }

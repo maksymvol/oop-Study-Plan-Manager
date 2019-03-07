@@ -1,8 +1,10 @@
 package educationPlanManager;
 
+import java.util.ArrayList;
+
 public class SelfEducationStrategy extends Activity {
-    public SelfEducationStrategy(TimeFrame timeFrame) {
-        super(timeFrame);
+    public SelfEducationStrategy(ArrayList<TimeFrame> timeFrames) {
+        super(timeFrames);
     }
 
     @Override

@@ -1,8 +1,10 @@
 package educationPlanManager;
 
+import java.util.ArrayList;
+
 public class MeetUpStrategy extends Activity {
-    public MeetUpStrategy(TimeFrame timeFrame) {
-        super(timeFrame);
+    public MeetUpStrategy(ArrayList<TimeFrame> timeFrames) {
+        super(timeFrames);
     }
 
     @Override
