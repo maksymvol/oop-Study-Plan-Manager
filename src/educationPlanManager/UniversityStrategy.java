@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 public class UniversityStrategy extends Activity {
     public UniversityStrategy(ArrayList<TimeFrame> timeFrames) {
-        super(timeFrames);
+        super(timeFrames, 5);
+    }
+
+    public UniversityStrategy(TimeFrame timeFrame) {
+        super(timeFrame, 5);
     }
 
     @Override

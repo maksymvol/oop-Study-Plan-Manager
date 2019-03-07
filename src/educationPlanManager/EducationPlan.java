@@ -15,8 +15,10 @@ public class EducationPlan {
     public Knowledge apply(Student student, LocalDate currentDate) {
         while (currentDate.isBefore(expirationDate) || currentDate.equals(expirationDate)) {
             boolean isInThisDay;
+            int dayInsensitivity = 10;
             for (Activity activity : activities) {
                 isInThisDay = true;
+                boolean isFitInDay = false;
 
                 for (TimeFrame frame : activity.getTimeFrames()) {
                     if (!frame.checkForThisDay(currentDate)) {
@@ -25,10 +27,16 @@ public class EducationPlan {
                 }
 
                 if (isInThisDay) {
-                    activity.teach(student);
+                    if (dayInsensitivity >= activity.getDayIntensivityCoefficient()) {
+                        activity.teach(student);
+                        dayInsensitivity -= activity.getDayIntensivityCoefficient();
+                        isFitInDay = true;
+                    }
                 }
+                //System.out.println(dayInsensitivity + " " + activity.getClass() + "  " + isInThisDay + " " + isFitInDay);
             }
             currentDate = currentDate.plusDays(1);
+            //System.out.println("=========newDay=========");
         }
         return student.getKnowledge();
     }

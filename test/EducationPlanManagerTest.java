@@ -23,9 +23,7 @@ class EducationPlanManagerTest {
 
         student = new Student(1, new Knowledge(0, 0));
         activities = new ArrayList<>();
-        timeFrames = new ArrayList<>();
-        timeFrames.add(new EveryDayTimeStrategy());
-        activities.add(new SelfEducationStrategy(timeFrames));
+        activities.add(new SelfEducationStrategy(new EveryDayTimeStrategy()));
         plan = new EducationPlan(activities, currentDate);
     }
 
@@ -46,26 +44,26 @@ class EducationPlanManagerTest {
 
     @Test
     void applyPlan__manyActivities__oneDay() {
-        activities.add(new InternshipStrategy(timeFrames));
-        activities.add(new UniversityStrategy(timeFrames));
-        activities.add(new MeetUpStrategy(timeFrames));
+        activities.add(new InternshipStrategy(new EveryDayTimeStrategy()));
+        activities.add(new UniversityStrategy(new EveryDayTimeStrategy()));
+        activities.add(new MeetUpStrategy(new EveryDayTimeStrategy()));
         plan = new EducationPlan(activities, currentDate);
 
         Knowledge result = plan.apply(student, currentDate);
-        assertThat(result.getPractical(), is(6.5));
-        assertThat(result.getTheoretical(), is(6.5));
+        assertThat(result.getPractical(), is(6.0));
+        assertThat(result.getTheoretical(), is(6.0));
     }
 
     @Test
     void applyPlan__threeDays() {
-        activities.add(new InternshipStrategy(timeFrames));
-        activities.add(new UniversityStrategy(timeFrames));
-        activities.add(new MeetUpStrategy(timeFrames));
+        activities.add(new InternshipStrategy(new EveryDayTimeStrategy()));
+        activities.add(new UniversityStrategy(new EveryDayTimeStrategy()));
+        activities.add(new MeetUpStrategy(new EveryDayTimeStrategy()));
         plan = new EducationPlan(activities, currentDate.plusDays(2));
 
         Knowledge result = plan.apply(student, currentDate);
-        assertThat(result.getPractical(), is(19.5));
-        assertThat(result.getTheoretical(), is(19.5));
+        assertThat(result.getPractical(), is(18.0));
+        assertThat(result.getTheoretical(), is(18.0));
     }
 
     @Test
@@ -122,5 +120,19 @@ class EducationPlanManagerTest {
         Knowledge result = plan.apply(student, currentDate);
         assertThat(result.getPractical(), is(5.0));
         assertThat(result.getTheoretical(), is(5.0));
+    }
+
+    @Test
+    void planBuilder__activityPriorities() {
+        plan = new PlanBuilder()
+                .setLimit(currentDate, 7)
+                .internship()
+                .selfEducation(TimeStrategyType.EVERY_DAY)
+                .meetUp(currentDate.plusDays(1))
+                .university()
+                .build();
+        Knowledge result = plan.apply(student, currentDate);
+        assertThat(result.getPractical(), is(24.0));
+        assertThat(result.getTheoretical(), is(24.0));
     }
 }
