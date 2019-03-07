@@ -13,6 +13,6 @@ public class UniversityStrategy extends Activity {
 
     @Override
     public void teach(Student student) {
-        student.addKnowledge(0.5, 0.5);
+        student.addKnowledge(0.1, 0.1);
     }
 }

@@ -12,6 +12,14 @@ public class Student {
         this.knowledge = knowledge;
     }
 
+    public void setLearningCoefficient(double learningCoefficient) {
+        this.learningCoefficient = learningCoefficient;
+    }
+
+    public void setHavingLaptop(boolean havingLaptop) {
+        hasLaptop = havingLaptop;
+    }
+
     void addKnowledge(double practical, double theoretical) {
         knowledge.addPractical(practical * learningCoefficient);
         knowledge.addTheoretical(theoretical * learningCoefficient);
@@ -21,11 +29,7 @@ public class Student {
         return knowledge;
     }
 
-    public void setHavingLaptop(boolean havingLaptop) {
-        hasLaptop = havingLaptop;
-    }
-
-    public boolean hasLaptop() {
+    boolean hasLaptop() {
         return hasLaptop;
     }
 }

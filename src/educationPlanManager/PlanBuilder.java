@@ -32,7 +32,10 @@ public class PlanBuilder {
     }
 
     public EducationPlan selfEducationPlan() {
-        activities.add(new InternshipStrategy(new WorkingDaysTimeStrategy()));
+        ArrayList<TimeFrame> frames = new ArrayList<>();
+        frames.add(new WorkingDaysTimeStrategy());
+        frames.add(new IntervalTimeStrategy(expirationDate.minusMonths(3), expirationDate));
+        activities.add(new InternshipStrategy(frames));
         activities.add(new MeetUpStrategy(new OneDayPerMonthTimeStrategy(expirationDate.minusDays(1))));
         activities.add(new SelfEducationStrategy(new EveryDayTimeStrategy()));
         return new EducationPlan(activities, expirationDate);
@@ -45,10 +48,13 @@ public class PlanBuilder {
     }
 
     public EducationPlan responsibleStudentPlan() {
-        activities.add(new UniversityStrategy(new WorkingDaysTimeStrategy()));
+        ArrayList<TimeFrame> frames = new ArrayList<>();
+        frames.add(new WorkingDaysTimeStrategy());
+        frames.add(new IntervalTimeStrategy(expirationDate.minusMonths(3), expirationDate));
+        activities.add(new InternshipStrategy(frames));
         activities.add(new MeetUpStrategy(new OneDayPerMonthTimeStrategy(expirationDate.minusDays(1))));
         activities.add(new SelfEducationStrategy(new EveryDayTimeStrategy()));
-        activities.add(new InternshipStrategy(new IntervalTimeStrategy(expirationDate.minusYears(1), expirationDate)));
+        activities.add(new UniversityStrategy(new WorkingDaysTimeStrategy()));
         return new EducationPlan(activities, expirationDate);
     }
 
@@ -75,6 +81,7 @@ public class PlanBuilder {
             case WORKS_DAY: return new WorkingDaysTimeStrategy();
             case TIME_INTERVAL: return new IntervalTimeStrategy(startDate, endDate);
             case YEARS_INTERVAL: return new IntervalTimeStrategy(startDate, endDate);
+            case NONE_ACTIVITY_INTERVAL: return new NoneActivityIntervalTimeStrategy(startDate, endDate);
         }
         return new EveryDayTimeStrategy();
     }

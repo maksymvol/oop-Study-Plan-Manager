@@ -33,16 +33,16 @@ class EducationPlanManagerTest {
     @Test
     void applyPlan__oneActivity__oneDay() {
         Knowledge result = plan.apply(student, currentDate);
-        assertThat(result.getPractical(), is(1.0));
-        assertThat(result.getTheoretical(), is(1.0));
+        assertThat(result.getPractical(), is(2.0));
+        assertThat(result.getTheoretical(), is(2.0));
     }
 
     @Test
     void applyPlan__studentLearningCoefficient() {
         student = new Student(0.5, new Knowledge(0, 0));
         Knowledge result = plan.apply(student, currentDate);
-        assertThat(result.getPractical(), is(0.5));
-        assertThat(result.getTheoretical(), is(0.5));
+        assertThat(result.getPractical(), is(1.0));
+        assertThat(result.getTheoretical(), is(1.0));
     }
 
     @Test
@@ -53,8 +53,8 @@ class EducationPlanManagerTest {
         plan = new EducationPlan(activities, currentDate);
 
         Knowledge result = plan.apply(student, currentDate);
-        assertThat(result.getPractical(), is(6.0));
-        assertThat(result.getTheoretical(), is(6.0));
+        assertThat(result.getPractical(), is(15.0));
+        assertThat(result.getTheoretical(), is(10.0));
     }
 
     @Test
@@ -65,8 +65,8 @@ class EducationPlanManagerTest {
         plan = new EducationPlan(activities, currentDate.plusDays(2));
 
         Knowledge result = plan.apply(student, currentDate);
-        assertThat(result.getPractical(), is(18.0));
-        assertThat(result.getTheoretical(), is(18.0));
+        assertThat(result.getPractical(), is(45.0));
+        assertThat(result.getTheoretical(), is(30.0));
     }
 
     @Test
@@ -78,8 +78,8 @@ class EducationPlanManagerTest {
         plan = new EducationPlan(activities, currentDate.plusDays(6));
 
         Knowledge result = plan.apply(student, currentDate);
-        assertThat(result.getPractical(), is(2.0));
-        assertThat(result.getTheoretical(), is(2.0));
+        assertThat(result.getPractical(), is(3.0));
+        assertThat(result.getTheoretical(), is(3.0));
     }
 
     @Test
@@ -91,8 +91,8 @@ class EducationPlanManagerTest {
         plan = new EducationPlan(activities, currentDate.plusDays(6));
 
         Knowledge result = plan.apply(student, currentDate);
-        assertThat(result.getPractical(), is(2.5));
-        assertThat(result.getTheoretical(), is(2.5));
+        assertThat(result.getPractical(), is(0.5));
+        assertThat(result.getTheoretical(), is(0.5));
     }
 
     @Test
@@ -104,8 +104,8 @@ class EducationPlanManagerTest {
         plan = new EducationPlan(activities, currentDate.plusDays(7));
 
         Knowledge result = plan.apply(student, currentDate);
-        assertThat(result.getPractical(), is(5.0));
-        assertThat(result.getTheoretical(), is(5.0));
+        assertThat(result.getPractical(), is(10.0));
+        assertThat(result.getTheoretical(), is(10.0));
     }
 
     @Test
@@ -121,8 +121,8 @@ class EducationPlanManagerTest {
         plan = new EducationPlan(activities, currentDate.plusDays(9));
 
         Knowledge result = plan.apply(student, currentDate);
-        assertThat(result.getPractical(), is(5.0));
-        assertThat(result.getTheoretical(), is(5.0));
+        assertThat(result.getPractical(), is(10.0));
+        assertThat(result.getTheoretical(), is(10.0));
     }
 
     @Test
@@ -136,8 +136,8 @@ class EducationPlanManagerTest {
                 .university()
                 .build();
         Knowledge result = plan.apply(student, currentDate);
-        assertThat(result.getPractical(), is(24.0));
-        assertThat(result.getTheoretical(), is(24.0));
+        assertThat(result.getPractical(), is(67.0));
+        assertThat(result.getTheoretical(), is(42.0));
     }
 
     @Test
@@ -148,8 +148,8 @@ class EducationPlanManagerTest {
                 .selfEducation(TimeStrategyType.TIME_INTERVAL)
                 .build();
         Knowledge result = plan.apply(student, currentDate);
-        assertThat(result.getPractical(), is(5.0));
-        assertThat(result.getTheoretical(), is(5.0));
+        assertThat(result.getPractical(), is(10.0));
+        assertThat(result.getTheoretical(), is(10.0));
     }
 
     @Test
@@ -160,8 +160,8 @@ class EducationPlanManagerTest {
                 .selfEducation(TimeStrategyType.ONE_DAY_MEETUP)
                 .build();
         Knowledge result = plan.apply(student, currentDate);
-        assertThat(result.getPractical(), is(1.0));
-        assertThat(result.getTheoretical(), is(1.0));
+        assertThat(result.getPractical(), is(2.0));
+        assertThat(result.getTheoretical(), is(2.0));
     }
 
     @Test
@@ -173,8 +173,8 @@ class EducationPlanManagerTest {
                 .meetUp(currentDate.plusDays(1))
                 .build();
         Knowledge result = plan.apply(student, currentDate);
-        assertThat(result.getPractical(), is(5.0));
-        assertThat(result.getTheoretical(), is(5.0));
+        assertThat(result.getPractical(), is(6.2));
+        assertThat(result.getTheoretical(), is(6.2));
     }
 
     @Test
@@ -186,12 +186,25 @@ class EducationPlanManagerTest {
                 .build();
         Knowledge result = plan.apply(student, currentDate);
         assertThat(result.getPractical(), is(0.0));
-        assertThat(result.getTheoretical(), is(2.0));
+        assertThat(result.getTheoretical(), is(4.0));
     }
 
     @Test
-    void planBuilder__completelyPlans() {
+    void planBuilder__timeStrategyTypes__noneActivityInterval() {
+        plan = new PlanBuilder()
+                .setLimit(currentDate, 7)
+                .setTimeInterval(currentDate, currentDate.plusDays(2))
+                .selfEducation(TimeStrategyType.NONE_ACTIVITY_INTERVAL)
+                .build();
+        Knowledge result = plan.apply(student, currentDate);
+        assertThat(result.getPractical(), is(8.0));
+        assertThat(result.getTheoretical(), is(8.0));
+    }
+
+    @Test
+    void planBuilder__planTemplates() {
         System.out.println("=======Pacifist plan=======");
+        student.setLearningCoefficient(0.2);
         Knowledge result = new PlanBuilder()
                 .setLimitInYears(currentDate, 5)
                 .pacifistPlan()
@@ -199,6 +212,7 @@ class EducationPlanManagerTest {
         System.out.println("Practical points:" + result.getPractical() + "\nTheoretical points: " + result.getTheoretical());
 
         System.out.println("\n====Self education plan====");
+        student.setLearningCoefficient(2.0);
         result = new PlanBuilder()
                 .setLimitInYears(currentDate, 5)
                 .selfEducationPlan()
@@ -206,6 +220,7 @@ class EducationPlanManagerTest {
         System.out.println("Practical points:" + result.getPractical() + "\nTheoretical points: " + result.getTheoretical());
 
         System.out.println("\n==Teach me completely plan==");
+        student.setLearningCoefficient(0.5);
         result = new PlanBuilder()
                 .setLimitInYears(currentDate, 5)
                 .teachMeCompletelyPlan()
@@ -213,6 +228,7 @@ class EducationPlanManagerTest {
         System.out.println("Practical points:" + result.getPractical() + "\nTheoretical points: " + result.getTheoretical());
 
         System.out.println("\n==Responsible Student plan==");
+        student.setLearningCoefficient(4.0);
         result = new PlanBuilder()
                 .setLimitInYears(currentDate, 5)
                 .responsibleStudentPlan()

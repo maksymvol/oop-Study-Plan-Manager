@@ -13,6 +13,6 @@ public class SelfEducationStrategy extends Activity {
 
     @Override
     public void teach(Student student) {
-        student.addKnowledge(1, 1);
+        student.addKnowledge(2, 2);
     }
 }

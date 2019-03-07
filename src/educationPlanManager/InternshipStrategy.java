@@ -13,6 +13,6 @@ public class InternshipStrategy extends Activity {
 
     @Override
     public void teach(Student student) {
-        student.addKnowledge(3, 3);
+        student.addKnowledge(10, 5);
     }
 }
